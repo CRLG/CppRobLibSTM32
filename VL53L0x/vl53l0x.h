@@ -1,7 +1,7 @@
 #ifndef _VL53L0X_STM32_H_
 #define _VL53L0X_STM32_H_
 
-#include "stm32h7xx_hal.h"
+#include "main.h"
 
 #include "vl53l0x_base.h"
 
