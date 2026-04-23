@@ -1,4 +1,4 @@
-#include <stdio.h>
+//#include <stdio.h>
 #include "ydlidar_tminiplus_stm32.h"
 
 YDLIDAR_TminiPlusSTM32::YDLIDAR_TminiPlusSTM32(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma)
@@ -146,7 +146,7 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
             //emit new_data(m_current_lidar_data);
         	// TODO : filtrage
         	//printf("%d\n\r", HAL_GetTick());
-        	printf("DeltaT : %d\n\r", HAL_GetTick() - old_last_cycle_time);
+        	//printf("DeltaT : %d\n\r", HAL_GetTick() - old_last_cycle_time);
         	old_last_cycle_time = HAL_GetTick();
         }
         // else : il y a un problème dans le transfert, le cycle doit être ignoré car corrompu
