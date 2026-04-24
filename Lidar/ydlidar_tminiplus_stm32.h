@@ -20,6 +20,9 @@ public:
 
     CLidarData m_filtered_data;
 
+    void periodicTask();
+    bool is_present();
+
 protected :
     UART_HandleTypeDef *m_huart;
     DMA_HandleTypeDef *m_hdma;
@@ -32,6 +35,9 @@ protected :
 private :
     CLidarData m_current_lidar_data;
     int m_current_index;
+    unsigned long m_received_valid_cycles_count;
+    bool m_lidar_present;
+
     CLidarDataFilterTracker m_data_filter;
 
     static const unsigned int UART_RX_BUFFER_SIZE = 140;

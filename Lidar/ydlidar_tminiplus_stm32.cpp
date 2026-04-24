@@ -4,6 +4,8 @@
 YDLIDAR_TminiPlusSTM32::YDLIDAR_TminiPlusSTM32(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma)
 	: m_huart(huart),
 	  m_hdma(hdma),
+	  m_received_valid_cycles_count(0),
+	  m_lidar_present(false),
 	  m_current_uart_buff(0),
 	  m_uart_buff1_ready(false),
 	  m_uart_buff2_ready(false)
@@ -180,5 +182,25 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
 #endif
 }
 
+// _______________________________________________________
+/*!
+ * Diagnostic la présence du LIDAR
+ * (basé sur le nombre de cycles reçus)
+ * A appeler toutes les 200msec
+ */
+void YDLIDAR_TminiPlusSTM32::periodicTask()
+{
+   static unsigned long old_counter = 0;
+   m_lidar_present = (m_received_valid_cycles_count > old_counter);  // Si entre 2 périodes le nombre de cycles valide a bien évolué, c'est que le LIDAR est bien présent
+   old_counter = m_received_valid_cycles_count;
+}
 
+// _______________________________________________________
+/*!
+ * Retour vers l'applicatif pour indiquer si le LIDAR dialogue
+ */
+bool YDLIDAR_TminiPlusSTM32::is_present()
+{
+    return m_lidar_present;
+}
 
