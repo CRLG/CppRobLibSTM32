@@ -12,7 +12,7 @@ public:
 
     /*virtual*/void start_measures() override;
 
-    void init();
+    void init(bool _start_measures=true);
     void set_max_scan_frequency();
     void irq_dma();
     void check_and_compute_buffers();

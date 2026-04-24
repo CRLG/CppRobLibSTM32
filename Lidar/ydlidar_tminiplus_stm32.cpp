@@ -12,7 +12,7 @@ YDLIDAR_TminiPlusSTM32::YDLIDAR_TminiPlusSTM32(UART_HandleTypeDef *huart, DMA_Ha
 
 
 // _______________________________________________________
-void YDLIDAR_TminiPlusSTM32::init()
+void YDLIDAR_TminiPlusSTM32::init(bool _start_measures)
 {
     // fixe la fréquence de rafraichissement au maximum (à 12Hz)
     set_max_scan_frequency();
@@ -22,7 +22,7 @@ void YDLIDAR_TminiPlusSTM32::init()
 
 
     // Lance les mesures
-    //start_measures();
+    if (_start_measures) start_measures();
 
 }
 
