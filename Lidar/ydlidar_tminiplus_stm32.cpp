@@ -127,7 +127,6 @@ bool YDLIDAR_TminiPlusSTM32::read_serial(const char buff[], unsigned long len)
  */
 void YDLIDAR_TminiPlusSTM32::new_packet()
 {
-	static unsigned long old_last_cycle_time;
     if (isFirstPacket(&m_packet)) {
         m_current_index = 0;
         m_current_lidar_data.m_start_angle = firstAngle(&m_packet);
@@ -143,11 +142,9 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
         m_current_lidar_data.m_angle_step_resolution = 360./m_data_count_in_cycle;
         m_current_lidar_data.m_measures_count = m_data_count_in_cycle;
         if (m_current_lidar_data.m_measures_count <=  m_current_lidar_data.MAX_MEASURES_COUNT ) {
-            //emit new_data(m_current_lidar_data);
-        	// TODO : filtrage
-        	//printf("%d\n\r", HAL_GetTick());
-        	//printf("DeltaT : %d\n\r", HAL_GetTick() - old_last_cycle_time);
-        	old_last_cycle_time = HAL_GetTick();
+        	m_received_valid_cycles_count++;
+        	// Applique le filtre sur les données brutes
+        	m_data_filter.filter(&m_current_lidar_data, &m_filtered_data);
         }
         // else : il y a un problème dans le transfert, le cycle doit être ignoré car corrompu
     }

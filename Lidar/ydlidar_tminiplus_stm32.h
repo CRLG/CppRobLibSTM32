@@ -4,6 +4,7 @@
 #include "main.h"
 #include "ydlidar_tminiplus_base.h"
 #include "lidar_data.h"
+#include "lidar_data_filter_tracker.h"
 
 class YDLIDAR_TminiPlusSTM32 : public YDLIDAR_TminiPlusBase
 {
@@ -17,6 +18,8 @@ public:
     void irq_dma();
     void check_and_compute_buffers();
 
+    CLidarData m_filtered_data;
+
 protected :
     UART_HandleTypeDef *m_huart;
     DMA_HandleTypeDef *m_hdma;
@@ -29,6 +32,7 @@ protected :
 private :
     CLidarData m_current_lidar_data;
     int m_current_index;
+    CLidarDataFilterTracker m_data_filter;
 
     static const unsigned int UART_RX_BUFFER_SIZE = 140;
 
