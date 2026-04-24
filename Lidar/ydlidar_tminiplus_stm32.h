@@ -5,6 +5,7 @@
 #include "ydlidar_tminiplus_base.h"
 #include "lidar_data.h"
 #include "lidar_data_filter_tracker.h"
+#include "Lidar_utils.h"
 
 class YDLIDAR_TminiPlusSTM32 : public YDLIDAR_TminiPlusBase
 {
@@ -19,6 +20,8 @@ public:
     void check_and_compute_buffers();
 
     CLidarData m_filtered_data;
+    LidarUtils::tLidarObstacles m_obstacles;
+    int m_obstacles_status;
 
     void periodicTask();
     bool is_present();

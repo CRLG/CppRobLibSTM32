@@ -2,13 +2,13 @@
 #include "ydlidar_tminiplus_stm32.h"
 
 YDLIDAR_TminiPlusSTM32::YDLIDAR_TminiPlusSTM32(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma)
-	: m_huart(huart),
-	  m_hdma(hdma),
-	  m_received_valid_cycles_count(0),
-	  m_lidar_present(false),
-	  m_current_uart_buff(0),
-	  m_uart_buff1_ready(false),
-	  m_uart_buff2_ready(false)
+    : m_huart(huart),
+      m_hdma(hdma),
+      m_received_valid_cycles_count(0),
+      m_lidar_present(false),
+      m_current_uart_buff(0),
+      m_uart_buff1_ready(false),
+      m_uart_buff2_ready(false)
 {
 }
 
@@ -34,11 +34,11 @@ void YDLIDAR_TminiPlusSTM32::init(bool _start_measures)
  */
 void YDLIDAR_TminiPlusSTM32::start_measures()
 {
-	YDLIDAR_TminiPlusBase::start_measures();
+    YDLIDAR_TminiPlusBase::start_measures();
 
-	// Configure la réception DMA sur le buffer1 pour commencer
-	m_current_uart_buff = 1;
-	HAL_UART_Receive_DMA(m_huart, m_uart_irq_rxbuff1, UART_RX_BUFFER_SIZE);
+    // Configure la réception DMA sur le buffer1 pour commencer
+    m_current_uart_buff = 1;
+    HAL_UART_Receive_DMA(m_huart, m_uart_irq_rxbuff1, UART_RX_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(m_hdma, DMA_IT_HT);  // supprime l'IRQ de buffer à moitié plein (il ne restera que l'IRQ de buffer rempli)
 }
 
@@ -50,25 +50,25 @@ void YDLIDAR_TminiPlusSTM32::start_measures()
 
 void YDLIDAR_TminiPlusSTM32::set_max_scan_frequency()
 {
-	for (int i=0; i<10; i++) {
-		scan_P1();
-		HAL_Delay(10);
-	}
+    for (int i=0; i<10; i++) {
+        scan_P1();
+        HAL_Delay(10);
+    }
 }
 
 // _______________________________________________________
 void YDLIDAR_TminiPlusSTM32::irq_dma()
 {
-	if (m_current_uart_buff == 1) {
-		m_uart_buff1_ready = 1;
-		m_current_uart_buff = 2;
-		HAL_UART_Receive_DMA(m_huart, m_uart_irq_rxbuff2, UART_RX_BUFFER_SIZE);
-	}
-	else {
-		m_uart_buff2_ready = 1;
-		m_current_uart_buff = 1;
-		HAL_UART_Receive_DMA(m_huart, m_uart_irq_rxbuff1, UART_RX_BUFFER_SIZE);
-	}
+    if (m_current_uart_buff == 1) {
+        m_uart_buff1_ready = 1;
+        m_current_uart_buff = 2;
+        HAL_UART_Receive_DMA(m_huart, m_uart_irq_rxbuff2, UART_RX_BUFFER_SIZE);
+    }
+    else {
+        m_uart_buff2_ready = 1;
+        m_current_uart_buff = 1;
+        HAL_UART_Receive_DMA(m_huart, m_uart_irq_rxbuff1, UART_RX_BUFFER_SIZE);
+    }
 
     __HAL_DMA_DISABLE_IT(m_hdma, DMA_IT_HT);  // supprime l'IRQ de buffer à moitié plein (il ne restera que l'IRQ de buffer rempli)
 }
@@ -81,17 +81,17 @@ void YDLIDAR_TminiPlusSTM32::irq_dma()
 void YDLIDAR_TminiPlusSTM32::check_and_compute_buffers()
 {
     if (m_uart_buff1_ready) {
-    	HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_SET);
-    	m_uart_buff1_ready = 0;
-    	reconstitution(m_uart_irq_rxbuff1, UART_RX_BUFFER_SIZE);
-    	HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_SET);
+        m_uart_buff1_ready = 0;
+        reconstitution(m_uart_irq_rxbuff1, UART_RX_BUFFER_SIZE);
+        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_RESET);
     }
 
     if (m_uart_buff2_ready) {
-    	HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_SET);
-    	m_uart_buff2_ready = 0;
-    	reconstitution(m_uart_irq_rxbuff2, UART_RX_BUFFER_SIZE);
-    	HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_SET);
+        m_uart_buff2_ready = 0;
+        reconstitution(m_uart_irq_rxbuff2, UART_RX_BUFFER_SIZE);
+        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_RESET);
     }
 }
 
@@ -103,9 +103,9 @@ void YDLIDAR_TminiPlusSTM32::check_and_compute_buffers()
  */
 bool YDLIDAR_TminiPlusSTM32::write_serial(const char buff[], unsigned long len)
 {
-	if (!m_huart) return false;
-	HAL_StatusTypeDef status = HAL_UART_Transmit(m_huart, (uint8_t*)buff, len, 500);
-	return (status == HAL_OK);
+    if (!m_huart) return false;
+    HAL_StatusTypeDef status = HAL_UART_Transmit(m_huart, (uint8_t*)buff, len, 500);
+    return (status == HAL_OK);
 }
 
 
@@ -117,10 +117,10 @@ bool YDLIDAR_TminiPlusSTM32::write_serial(const char buff[], unsigned long len)
  */
 bool YDLIDAR_TminiPlusSTM32::read_serial(const char buff[], unsigned long len)
 {
-	if (!m_huart) return false;
-	HAL_UART_AbortReceive(m_huart); // purge les données restées non traitées dans le buffer de réception
-	HAL_StatusTypeDef status = HAL_UART_Receive(m_huart, (uint8_t*)buff, len, 500);
-	return (status == HAL_OK);
+    if (!m_huart) return false;
+    HAL_UART_AbortReceive(m_huart); // purge les données restées non traitées dans le buffer de réception
+    HAL_StatusTypeDef status = HAL_UART_Receive(m_huart, (uint8_t*)buff, len, 500);
+    return (status == HAL_OK);
 }
 
 // _______________________________________________________
@@ -144,9 +144,11 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
         m_current_lidar_data.m_angle_step_resolution = 360./m_data_count_in_cycle;
         m_current_lidar_data.m_measures_count = m_data_count_in_cycle;
         if (m_current_lidar_data.m_measures_count <=  m_current_lidar_data.MAX_MEASURES_COUNT ) {
-        	m_received_valid_cycles_count++;
-        	// Applique le filtre sur les données brutes
-        	m_data_filter.filter(&m_current_lidar_data, &m_filtered_data);
+            m_received_valid_cycles_count++;
+            // Applique le filtre sur les données brutes
+            m_data_filter.filter(&m_current_lidar_data, &m_filtered_data);
+            // Transforme les données filtrées en obstacles utilisables par la stratégie
+            m_obstacles_status = LidarUtils::lidar_data_to_obstacles(&m_filtered_data, m_obstacles);
         }
         // else : il y a un problème dans le transfert, le cycle doit être ignoré car corrompu
     }
@@ -169,8 +171,8 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
             bool valid = isDistanceValid(&m_packet, i);
             //if ( (dist < 100) && (dist!=0)) qDebug() << QString("Angle=%1 / Distance=%2 / Valid=%3").arg(angle).arg(dist).arg(valid);
             //if ( (angle>0) && (angle<15)) {
-                qDebug() << QString("Angle=%1 / Distance=%2 / Valid=%3").arg(angle).arg(dist).arg(valid);
-                data.m_dist_measures[i] = dist;
+            qDebug() << QString("Angle=%1 / Distance=%2 / Valid=%3").arg(angle).arg(dist).arg(valid);
+            data.m_dist_measures[i] = dist;
             //}
             if(0) {
                 unsigned int __index=3*i;
@@ -190,9 +192,9 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
  */
 void YDLIDAR_TminiPlusSTM32::periodicTask()
 {
-   static unsigned long old_counter = 0;
-   m_lidar_present = (m_received_valid_cycles_count > old_counter);  // Si entre 2 périodes le nombre de cycles valide a bien évolué, c'est que le LIDAR est bien présent
-   old_counter = m_received_valid_cycles_count;
+    static unsigned long old_counter = 0;
+    m_lidar_present = (m_received_valid_cycles_count > old_counter);  // Si entre 2 périodes le nombre de cycles valide a bien évolué, c'est que le LIDAR est bien présent
+    old_counter = m_received_valid_cycles_count;
 }
 
 // _______________________________________________________
