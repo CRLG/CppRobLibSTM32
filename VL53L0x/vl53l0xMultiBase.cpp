@@ -15,7 +15,7 @@ VL53L0X_Error VL53L0xMultiBase::init()
 
 	do {
 		status = _init();
-	} while ((status != VL53L0X_ERROR_NONE) && (attempt < 3));
+	} while ((status != VL53L0X_ERROR_NONE) && (++attempt < 3));
 
 	return status;
 }
