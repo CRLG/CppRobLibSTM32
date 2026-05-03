@@ -5,7 +5,7 @@
 class VL53L0xMultiBase
 {
 public :
-	VL53L0xMultiBase(I2C_HandleTypeDef *i2c_hdl);
+    VL53L0xMultiBase(I2C_HandleTypeDef *i2c_hdl);
 
     virtual uint8_t get_vl53_count() = 0;
     virtual VL53L0x *get_vl53(uint8_t index) = 0;
