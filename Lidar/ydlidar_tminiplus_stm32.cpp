@@ -81,17 +81,13 @@ void YDLIDAR_TminiPlusSTM32::irq_dma()
 void YDLIDAR_TminiPlusSTM32::check_and_compute_buffers()
 {
     if (m_uart_buff1_ready) {
-        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_SET);
         m_uart_buff1_ready = 0;
         reconstitution(m_uart_irq_rxbuff1, UART_RX_BUFFER_SIZE);
-        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_RESET);
     }
 
     if (m_uart_buff2_ready) {
-        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_SET);
         m_uart_buff2_ready = 0;
         reconstitution(m_uart_irq_rxbuff2, UART_RX_BUFFER_SIZE);
-        HAL_GPIO_WritePin(Mot1_Sens1_GPIO_Port, Mot1_Sens1_Pin, GPIO_PIN_RESET);
     }
 }
 
