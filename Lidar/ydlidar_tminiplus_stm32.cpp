@@ -132,7 +132,7 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
 
     for (unsigned int i=0; i<m_packet.packet_len; i++) {
         unsigned int dist = dataindex2Distance(&m_packet, i);
-        m_current_lidar_data.m_dist_measures[m_current_index] = dist;
+        m_current_lidar_data.m_dist_measures[m_current_index] = dist; // TODO : conversion [mm] -> [cm] ?
         if (m_current_index < m_current_lidar_data.MAX_MEASURES_COUNT) m_current_index++;
     }
 
