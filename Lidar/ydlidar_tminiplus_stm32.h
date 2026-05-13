@@ -5,6 +5,7 @@
 #include "ydlidar_tminiplus_base.h"
 #include "lidar_data.h"
 #include "lidar_data_filter_tracker.h"
+#include "lidar_data_filter_example.h"
 #include "Lidar_utils.h"
 
 class YDLIDAR_TminiPlusSTM32 : public YDLIDAR_TminiPlusBase
@@ -41,7 +42,8 @@ private :
     unsigned long m_received_valid_cycles_count;
     bool m_lidar_present;
 
-    CLidarDataFilterTracker m_data_filter;
+    //CLidarDataFilterTracker m_data_filter;
+    CLidarDataFilterExample m_data_filter;
 
     static const unsigned int UART_RX_BUFFER_SIZE = 140;
 
