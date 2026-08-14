@@ -136,7 +136,7 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
         if (m_current_index < m_current_lidar_data.MAX_MEASURES_COUNT) m_current_index++;
     }
 
-    if (isLastPacketOfCycle(&m_packet)) {
+    if (isLastPacketOfCycle(&m_packet) && (m_data_count_in_cycle>0)) {
         m_current_lidar_data.m_angle_step_resolution = 360./m_data_count_in_cycle;
         m_current_lidar_data.m_measures_count = m_data_count_in_cycle;
         if (m_current_lidar_data.m_measures_count <=  m_current_lidar_data.MAX_MEASURES_COUNT ) {
