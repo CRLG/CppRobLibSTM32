@@ -6,6 +6,7 @@ YDLIDAR_TminiPlusSTM32::YDLIDAR_TminiPlusSTM32(UART_HandleTypeDef *huart, DMA_Ha
       m_hdma(hdma),
       m_received_valid_cycles_count(0),
       m_lidar_present(false),
+      m_nouveau_scan(false),
       m_current_uart_buff(0),
       m_uart_buff1_ready(false),
       m_uart_buff2_ready(false)
@@ -145,6 +146,7 @@ void YDLIDAR_TminiPlusSTM32::new_packet()
             m_data_filter.filter(&m_current_lidar_data, &m_filtered_data);
             // Transforme les données filtrées en obstacles utilisables par la stratégie
             m_obstacles_status = LidarUtils::lidar_data_to_obstacles(&m_filtered_data, m_obstacles);
+            m_nouveau_scan = true;
         }
         // else : il y a un problème dans le transfert, le cycle doit être ignoré car corrompu
     }

@@ -27,6 +27,12 @@ public:
     //! Objets decoupes par le filtre au dernier tour, avec leur largeur angulaire apparente
     const CLidarBlobs& blobs() const { return m_data_filter.blobs(); }
 
+    //! Un tour de balayage a ete filtre depuis la derniere consommation. Le lidar tourne a ~8 Hz
+    //! et le modele a 50 Hz : sans ce drapeau, le meme balayage serait pris pour une nouvelle
+    //! mesure a chaque pas, et le suivi temporel estimerait des vitesses nulles.
+    bool is_new_scan() const { return m_nouveau_scan; }
+    void consume_scan() { m_nouveau_scan = false; }
+
     void periodicTask();
     bool is_present();
 
@@ -44,6 +50,7 @@ private :
     int m_current_index;
     unsigned long m_received_valid_cycles_count;
     bool m_lidar_present;
+    bool m_nouveau_scan;
 
     // Filtre "tracker" : decoupe le balayage en objets et rejette ce qui ne peut pas etre un mat
     // balise (facteur de forme borne des deux cotes). Le filtre "example", qui se contentait
