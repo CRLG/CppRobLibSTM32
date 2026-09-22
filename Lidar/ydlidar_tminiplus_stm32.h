@@ -24,6 +24,9 @@ public:
     LidarUtils::tLidarObstacles m_obstacles;
     int m_obstacles_status;
 
+    //! Objets decoupes par le filtre au dernier tour, avec leur largeur angulaire apparente
+    const CLidarBlobs& blobs() const { return m_data_filter.blobs(); }
+
     void periodicTask();
     bool is_present();
 
@@ -42,8 +45,12 @@ private :
     unsigned long m_received_valid_cycles_count;
     bool m_lidar_present;
 
-    //CLidarDataFilterTracker m_data_filter;
-    CLidarDataFilterExample m_data_filter;
+    // Filtre "tracker" : decoupe le balayage en objets et rejette ce qui ne peut pas etre un mat
+    // balise (facteur de forme borne des deux cotes). Le filtre "example", qui se contentait
+    // d'ecreter en distance, avait ete remis en place pour l'homologation 2026 ; il reste
+    // disponible en repli.
+    CLidarDataFilterTracker m_data_filter;
+    //CLidarDataFilterExample m_data_filter;
 
     static const unsigned int UART_RX_BUFFER_SIZE = 140;
 
